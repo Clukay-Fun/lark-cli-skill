@@ -1,8 +1,48 @@
-# lark-cli Extra Skills
+<div align="center">
 
-Extra skills that cover workflows and API surfaces not included in the official `larksuite/cli` skill set.
+# lark-cli-extra-skills
 
-Chinese translation: [README.zh-CN.md](README.zh-CN.md)
+**Extension Skill Pack for [larksuite/cli](https://github.com/larksuite/cli)**
+
+Extra skills for common workflows not covered by the official pack: batch data operations, interactive cards, and cross-service workflows.
+
+![Skills](https://img.shields.io/badge/skills-6-blue)
+![CLI Support](https://img.shields.io/badge/CLI-Claude%20%7C%20Codex%20%7C%20OpenCode%20%7C%20Gemini-green)
+![Docs](https://img.shields.io/badge/docs-English%20%7C%20中文-orange)
+
+[English](README.md) · [中文](README.zh-CN.md)
+
+</div>
+
+## What's Inside
+
+| Skill | Type | What it does |
+|-------|------|--------------|
+| `lark-setup` | Environment | Auto-install `lark-cli`, the official skill pack, and this repo's extra skills in supported AI CLI environments |
+| `lark-sheets-extra` | Domain | Sheets v2 helpers for merge cells, styling, and row or column operations |
+| `lark-base-batch` | Domain | Bitable batch record operations for create, update, and delete, up to 500 records per request |
+| `lark-im-card` | Domain | Interactive card JSON guide with reusable templates |
+| `lark-workflow-meeting` | Workflow | Find attendees, check availability, create an event, and send notifications |
+| `lark-doc-convert` | Workflow | Unified import and export flow between local files and Lark docs |
+
+## Quick Start
+
+Talk to your AI CLI agent:
+
+```text
+Install lark-cli and the extra Lark skills for me.
+```
+
+The `lark-setup` skill handles the full setup flow: it detects the active CLI environment, installs dependencies, and copies skills into the correct target directory.
+
+## Supported CLI Environments
+
+| CLI Tool | Skill Directory |
+|----------|-----------------|
+| Claude Code | `~/.claude/skills/` |
+| Codex | `$CODEX_HOME/skills/` |
+| OpenCode | `~/.config/opencode/skills/` |
+| Gemini CLI | `~/.gemini/skills/` |
 
 ## Language Policy
 

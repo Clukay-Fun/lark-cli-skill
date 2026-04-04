@@ -1,6 +1,48 @@
-# lark-cli 扩展 Skill 集
+<div align="center">
 
-补充官方 `larksuite/cli` skill 未覆盖的功能。
+# lark-cli-extra-skills
+
+**[larksuite/cli](https://github.com/larksuite/cli) 的扩展 Skill 包**
+
+补充官方 Skill 包未覆盖的高频场景：批量数据操作、消息卡片、跨服务工作流。
+
+![Skills](https://img.shields.io/badge/skills-6-blue)
+![CLI Support](https://img.shields.io/badge/CLI-Claude%20%7C%20Codex%20%7C%20OpenCode%20%7C%20Gemini-green)
+![Docs](https://img.shields.io/badge/docs-English%20%7C%20中文-orange)
+
+[English](README.md) · [中文](README.zh-CN.md)
+
+</div>
+
+## 包含内容
+
+| Skill | 类型 | 作用 |
+|-------|------|------|
+| `lark-setup` | 环境管理 | 自动安装 `lark-cli`、官方 skill 包，以及本仓库扩展 skill，并适配支持的 AI CLI 环境 |
+| `lark-sheets-extra` | 领域扩展 | Sheets v2：合并单元格、样式、插入或删除行列 |
+| `lark-base-batch` | 领域扩展 | 多维表格批量创建、更新、删除，单次请求最多 500 条 |
+| `lark-im-card` | 领域扩展 | 消息卡片 JSON 编写指南和可复用模板 |
+| `lark-workflow-meeting` | 工作流 | 查找参会人、查询忙闲、建会并发送通知 |
+| `lark-doc-convert` | 工作流 | 本地文件与飞书文档之间的统一导入导出流程 |
+
+## 快速开始
+
+直接对你的 AI CLI 代理说：
+
+```text
+帮我安装 lark-cli 和扩展 Skill
+```
+
+`lark-setup` 会负责整个安装流程：识别当前 CLI 环境、安装依赖，并把 skill 复制到正确的目标目录。
+
+## 支持的 CLI 环境
+
+| CLI 工具 | Skill 目录 |
+|----------|------------|
+| Claude Code | `~/.claude/skills/` |
+| Codex | `$CODEX_HOME/skills/` |
+| OpenCode | `~/.config/opencode/skills/` |
+| Gemini CLI | `~/.gemini/skills/` |
 
 English original: [README.md](README.md)
 
