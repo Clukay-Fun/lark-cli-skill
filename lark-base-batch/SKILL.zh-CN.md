@@ -4,7 +4,7 @@
 
 本文是中文翻译版，供阅读参考。默认 skill 入口和规范内容以英文版 `SKILL.md` 为准；若两者有差异，请以英文版为准。
 
-**前置条件：** 先安装官方 `larksuite/cli` skill 包，并阅读官方 `lark-shared` skill 中的认证和安全规则。
+**前置条件：** 先安装官方 `larksuite/cli` skill 包，并阅读官方 `lark-shared` skill 中的认证和安全规则。如果当前环境还没有 `lark-cli`，优先使用本仓库的 `lark-setup` skill 完成安装或刷新。
 
 这个 skill 补充了官方 `lark-base` skill 未暴露的批量记录 API。
 单条记录操作仍建议使用 `lark-base` 的 `+record-upsert` 和 `+record-delete`。

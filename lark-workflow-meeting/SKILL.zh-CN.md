@@ -4,7 +4,7 @@
 
 本文是中文翻译版，供阅读参考。默认 skill 入口和规范内容以英文版 `SKILL.md` 为准；若两者有差异，请以英文版为准。
 
-**前置条件：** 先安装官方 `larksuite/cli` skill 包，并阅读官方 `lark-shared` skill 中的认证和安全规则。
+**前置条件：** 先安装官方 `larksuite/cli` skill 包，并阅读官方 `lark-shared` skill 中的认证和安全规则。如果当前环境还没有 `lark-cli`，优先使用本仓库的 `lark-setup` skill 完成安装或刷新。
 
 这个工作流会编排 calendar、contact 和 im 三个领域，从“找时间”一直走到“发通知”。
 如果只需要处理日程，使用官方 `lark-calendar` skill；如果只需要发消息，使用官方 `lark-im` skill。

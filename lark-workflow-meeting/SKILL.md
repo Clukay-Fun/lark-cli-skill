@@ -11,7 +11,7 @@ metadata:
 
 Chinese translation: [SKILL.zh-CN.md](SKILL.zh-CN.md)
 
-**Prerequisites:** install the official `larksuite/cli` skill pack first, then review the authentication and safety rules in the official `lark-shared` skill.
+**Prerequisites:** install the official `larksuite/cli` skill pack first, then review the authentication and safety rules in the official `lark-shared` skill. If `lark-cli` is unavailable, use the local `lark-setup` skill to install or refresh the environment first.
 
 This workflow orchestrates the calendar, contact, and im domains to complete the full flow from time selection to attendee notification.
 For standalone calendar operations, use the official `lark-calendar` skill. For standalone messaging, use the official `lark-im` skill.

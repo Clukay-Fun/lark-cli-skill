@@ -4,7 +4,7 @@
 
 本文是中文翻译版，供阅读参考。默认 skill 入口和规范内容以英文版 `SKILL.md` 为准；若两者有差异，请以英文版为准。
 
-**前置条件：** 先安装官方 `larksuite/cli` skill 包，并阅读官方 `lark-shared` skill 中的认证和安全规则。
+**前置条件：** 先安装官方 `larksuite/cli` skill 包，并阅读官方 `lark-shared` skill 中的认证和安全规则。如果当前环境还没有 `lark-cli`，优先使用本仓库的 `lark-setup` skill 完成安装或刷新。
 
 飞书消息卡片，也就是 `interactive` 消息，比纯文本或 post 消息更丰富，支持标题、多栏布局、按钮、链接和 Markdown。
 这个 skill 用来指导 AI 正确构造卡片 JSON，并通过官方 `lark-im` skill 发送。

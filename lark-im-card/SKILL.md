@@ -11,7 +11,7 @@ metadata:
 
 Chinese translation: [SKILL.zh-CN.md](SKILL.zh-CN.md)
 
-**Prerequisites:** install the official `larksuite/cli` skill pack first, then review the authentication and safety rules in the official `lark-shared` skill.
+**Prerequisites:** install the official `larksuite/cli` skill pack first, then review the authentication and safety rules in the official `lark-shared` skill. If `lark-cli` is unavailable, use the local `lark-setup` skill to install or refresh the environment first.
 
 Lark interactive cards (`interactive` messages) are richer than plain text or post messages and support titles, multi-column layouts, buttons, links, and Markdown.
 This skill teaches the agent how to build valid card JSON and send it through the official `lark-im` skill.

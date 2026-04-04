@@ -11,7 +11,7 @@ metadata:
 
 Chinese translation: [SKILL.zh-CN.md](SKILL.zh-CN.md)
 
-**Prerequisites:** install the official `larksuite/cli` skill pack first, then review the authentication and safety rules in the official `lark-shared` skill.
+**Prerequisites:** install the official `larksuite/cli` skill pack first, then review the authentication and safety rules in the official `lark-shared` skill. If `lark-cli` is unavailable, use the local `lark-setup` skill to install or refresh the environment first.
 
 This skill acts as a unified entry point for import and export flows that otherwise span the official `lark-doc` and `lark-drive` skills.
 

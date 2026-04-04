@@ -12,7 +12,7 @@ metadata:
 
 Chinese translation: [SKILL.zh-CN.md](SKILL.zh-CN.md)
 
-**Prerequisites:** install the official `larksuite/cli` skill pack first, then review the authentication, identity switching, and safety rules in the official `lark-shared` skill.
+**Prerequisites:** install the official `larksuite/cli` skill pack first, then review the authentication, identity switching, and safety rules in the official `lark-shared` skill. If `lark-cli` is unavailable, use the local `lark-setup` skill to install or refresh the environment first.
 
 This skill covers v2 sheet APIs not exposed by the official `lark-sheets` skill, mainly formatting and structure operations.
 Keep using the official `lark-sheets` skill for built-in commands such as `+read`, `+write`, `+append`, `+find`, `+create`, `+info`, and `+export`.

@@ -4,7 +4,7 @@
 
 本文是中文翻译版，供阅读参考。默认 skill 入口和规范内容以英文版 `SKILL.md` 为准；若两者有差异，请以英文版为准。
 
-**前置条件：** 先安装官方 `larksuite/cli` skill 包，并阅读官方 `lark-shared` skill 中的认证、身份切换和安全规则。
+**前置条件：** 先安装官方 `larksuite/cli` skill 包，并阅读官方 `lark-shared` skill 中的认证、身份切换和安全规则。如果当前环境还没有 `lark-cli`，优先使用本仓库的 `lark-setup` skill 完成安装或刷新。
 
 这个 skill 用来补齐官方 `lark-sheets` skill 没有直接暴露的 v2 API，重点是格式和结构操作。
 像 `+read`、`+write`、`+append`、`+find`、`+create`、`+info`、`+export` 这些已有能力，仍然应使用官方 `lark-sheets` skill。

@@ -15,6 +15,7 @@ Chinese translation: [README.zh-CN.md](README.zh-CN.md)
 
 | Skill | Type | Description |
 |-------|------|-------------|
+| `lark-setup` | Environment management | Install, update, verify, and authenticate the Lark CLI environment and skill packs |
 | `lark-sheets-extra` | Domain extension | Sheets v2 helpers for merge cells, styling, and row/column operations |
 | `lark-base-batch` | Domain extension | Bitable batch record operations: `batch_create` / `batch_update` / `batch_delete` |
 | `lark-im-card` | Domain extension | Interactive card authoring guide with JSON structure and reusable templates |
@@ -23,17 +24,97 @@ Chinese translation: [README.zh-CN.md](README.zh-CN.md)
 
 ## Installation
 
-```bash
-# Install the official skill pack first
-npx skills add larksuite/cli -g -y
+In a conversation with your AI CLI agent, say:
 
-# Copy these extra skills into your local skills directory
+```text
+Install lark-cli and the extra Lark skills for me.
+```
+
+The `lark-setup` skill is the preferred entry point. It can detect the active CLI environment, install or update `lark-cli`, install the official `larksuite/cli` skill pack, and copy this repository's extra skills into the resolved skill directory.
+
+## Example Setup Conversations
+
+### First-Time Setup
+
+User:
+
+```text
+Install lark-cli and the extra Lark skills for me.
+```
+
+Agent behavior:
+
+- Checks `node`, `npm`, and `lark-cli`
+- Installs `lark-cli` if needed
+- Installs the official `larksuite/cli` skill pack
+- Detects the current AI CLI environment
+- Copies `lark-setup` and the extra skills into the resolved skill directory
+- Checks `lark-cli auth status`
+
+### Update an Existing Environment
+
+User:
+
+```text
+Update my Lark CLI environment.
+```
+
+Agent behavior:
+
+- Runs `npm update -g @anthropic-ai/lark-cli`
+- Refreshes the official `larksuite/cli` skill pack
+- Re-copies the extra skills into the detected skill directory
+- Verifies the installed version and skill presence
+
+### Verify Installation Only
+
+User:
+
+```text
+Is lark-cli installed and authenticated?
+```
+
+Agent behavior:
+
+- Checks whether `lark-cli` is on `PATH`
+- Prints or reports the installed version
+- Runs `lark-cli auth status`
+- Tells the user whether follow-up login is still required
+
+### Authentication Follow-Up
+
+User:
+
+```text
+Finish setting up Lark CLI auth.
+```
+
+Agent behavior:
+
+- Runs `lark-cli auth status`
+- If login is still required, tells the user to run `!lark-cli auth login`
+- Re-checks auth state after the user completes the interactive step
+
+Manual installation is still available:
+
+```bash
+npx skills add larksuite/cli -g -y
+cp -r lark-setup/ ~/.claude/skills/lark-setup/
 cp -r lark-sheets-extra/ ~/.claude/skills/lark-sheets-extra/
 cp -r lark-base-batch/ ~/.claude/skills/lark-base-batch/
 cp -r lark-im-card/ ~/.claude/skills/lark-im-card/
 cp -r lark-workflow-meeting/ ~/.claude/skills/lark-workflow-meeting/
 cp -r lark-doc-convert/ ~/.claude/skills/lark-doc-convert/
 ```
+
+Manual target directories vary by CLI environment:
+
+- Claude Code: `~/.claude/skills/`
+- Codex: `$CODEX_HOME/skills/`
+- OpenCode: `~/.config/opencode/skills/`
+- Gemini CLI: `~/.gemini/skills/`
+
+For Codex, use `$CODEX_HOME/skills/` only when `$CODEX_HOME` is defined. If it is not set, confirm the target directory instead of guessing.
 
 These extra skills depend on capabilities provided by the official `larksuite/cli` skill pack. This repository only contains supplemental documentation and helper scripts; it does not vendor official skills such as `lark-shared`, `lark-base`, `lark-im`, `lark-calendar`, or `lark-drive`.
 

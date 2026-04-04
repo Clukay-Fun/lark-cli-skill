@@ -11,7 +11,7 @@ metadata:
 
 Chinese translation: [SKILL.zh-CN.md](SKILL.zh-CN.md)
 
-**Prerequisites:** install the official `larksuite/cli` skill pack first, then review the authentication and safety rules in the official `lark-shared` skill.
+**Prerequisites:** install the official `larksuite/cli` skill pack first, then review the authentication and safety rules in the official `lark-shared` skill. If `lark-cli` is unavailable, use the local `lark-setup` skill to install or refresh the environment first.
 
 This skill covers batch record APIs not exposed by the official `lark-base` skill.
 For single-record operations, continue using `+record-upsert` and `+record-delete` from `lark-base`.
