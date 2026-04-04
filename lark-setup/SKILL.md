@@ -18,7 +18,7 @@ Use it when the user wants to install `lark-cli`, update it, install the officia
 
 1. Detect the current environment first.
 2. Detect installation capability separately from environment detection.
-3. Use a three-level fallback strategy: official install command -> local directory copy -> manual guidance.
+3. Use a layered fallback strategy: official install command -> GitHub Release archive download -> local directory copy -> manual guidance.
 4. Require an explicit success check after each installation path. "No error" is not enough.
 
 ## Use Cases
@@ -35,11 +35,11 @@ Detect the active CLI environment in this order:
 
 | Priority | Environment | Detection | Preferred install | Fallback | Discovery strategy | Verification |
 |----------|-------------|-----------|-------------------|----------|--------------------|--------------|
-| 1 | Claude Code | `CLAUDE_CODE=1` | Copy to `~/.claude/skills/` | None | Fixed path | `ls` plus a later skill-trigger check |
-| 2 | Codex | `CODEX_THREAD_ID` exists | Copy to `$CODEX_HOME/skills/` | Ask the user if `$CODEX_HOME` is unavailable | Environment variable | `ls` plus confirm that `$CODEX_HOME` resolves correctly |
-| 3 | OpenCode | `~/.config/opencode/opencode.json` exists | Copy to `~/.config/opencode/skills/` | None | Config presence | `ls` plus inspect the installed skill path or symlink |
-| 4 | Gemini CLI | `~/.gemini/settings.json` exists | Copy to `~/.gemini/skills/` | None | Config presence | `ls` plus a later skill-trigger check |
-| 5 | Registry-based CLI | Per-CLI detection | Use the CLI's official registry install command | Copy to a discovered install path, experimental | Find existing installed skills and infer the store path | Must confirm the CLI recognizes the skill, not just that files exist |
+| 1 | Claude Code | `CLAUDE_CODE=1` | Copy to `~/.claude/skills/` or extract a GitHub Release archive there | None | Fixed path | `ls` plus a later skill-trigger check |
+| 2 | Codex | `CODEX_THREAD_ID` exists | Copy to `$CODEX_HOME/skills/` or extract a GitHub Release archive there | Ask the user if `$CODEX_HOME` is unavailable | Environment variable | `ls` plus confirm that `$CODEX_HOME` resolves correctly |
+| 3 | OpenCode | `~/.config/opencode/opencode.json` exists | Copy to `~/.config/opencode/skills/` or extract a GitHub Release archive there | None | Config presence | `ls` plus inspect the installed skill path or symlink |
+| 4 | Gemini CLI | `~/.gemini/settings.json` exists | Copy to `~/.gemini/skills/` or extract a GitHub Release archive there | None | Config presence | `ls` plus a later skill-trigger check |
+| 5 | Registry-based CLI | Per-CLI detection | Use the CLI's official registry install command | Download a GitHub Release archive or copy to a discovered install path, experimental | Find existing installed skills and infer the store path | Must confirm the CLI recognizes the skill, not just that files exist |
 | 6 | Unknown | None matched | None | Ask the user for details | None | Stop and request more information |
 
 If more than one signal matches, use the first match in the table.
@@ -126,7 +126,8 @@ Apply the priority matrix above and resolve the current CLI environment.
 Read the environment's preferred installation strategy.
 
 - If an official registry install command is available, choose Level 1.
-- Otherwise, if a writable local skill directory can be resolved, choose Level 2.
+- Otherwise, if the GitHub Release archives are reachable and a target directory is known, choose Level 1.5.
+- Otherwise, if a writable local skill directory can be resolved and the repository contents are already available locally, choose Level 2.
 - Otherwise, stop at Level 3 and ask the user for guidance.
 
 ### Step 6: Install the Extra Skills
@@ -146,6 +147,29 @@ npx skills add <package> -g -y
 <cli> skills install <slug>
 ```
 
+#### Level 1.5: GitHub Release Archive
+
+If the repository is not already available locally, prefer downloading the standard release archive from GitHub and extracting it into the target skill directory.
+
+Examples:
+
+```bash
+curl -L https://github.com/<user>/lark-cli-extra-skills/releases/latest/download/lark-cli-extra-skills.tar.gz \
+  | tar xz -C <SKILLS_DIR>
+```
+
+```bash
+curl -L -o /tmp/lark-cli-extra-skills.zip \
+  https://github.com/<user>/lark-cli-extra-skills/releases/latest/download/lark-cli-extra-skills.zip
+unzip /tmp/lark-cli-extra-skills.zip -d <SKILLS_DIR>
+```
+
+Use this path when:
+
+- the environment accepts directory-based skill installs
+- the repository is not already cloned locally
+- GitHub is reachable from the current environment
+
 #### Level 2: Local Directory Copy
 
 If the environment supports direct local installation, copy the skills into the resolved target directory:
@@ -164,17 +188,18 @@ For registry-based CLIs, you may also try copying into a discovered install path
 
 #### Level 3: Manual Guidance
 
-If neither an official install command nor a writable local path is available, stop and explain the blocker.
+If neither an official install command, nor a GitHub Release download path, nor a writable local path is available, stop and explain the blocker.
 
 Example report:
 
-> This CLI environment does not expose a confirmed local skill install path, and no supported registry install command is available for this package. You can either provide the skill directory path, or publish the skill to the environment's registry first.
+> This CLI environment does not expose a confirmed local skill install path, and no supported registry install command or GitHub Release install path is available for this package. You can provide the skill directory path, publish the skill to the environment's registry, or download the release archive manually.
 
 ## Load Verification
 
 Do not treat file copy or command success as the final result. Verify that the environment can actually see the skill.
 
 - Open directory environments: verify files with `ls`, then use a later skill-trigger check when possible.
+- GitHub Release archive installs: verify extraction with `ls`, then confirm the target CLI can see the extracted skill directories.
 - Registry environments: prefer commands such as `<cli> skills list` to confirm the skill appears in the registry-managed list.
 - Experimental copy-to-discovered-path fallback: explicitly tell the user that the files were copied, but recognition is not guaranteed.
 

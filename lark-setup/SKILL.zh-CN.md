@@ -11,7 +11,7 @@
 
 1. 先识别当前环境。
 2. 将安装能力识别与环境识别拆开处理。
-3. 使用三级降级策略：官方命令 -> 本地目录复制 -> 手动引导。
+3. 使用分层降级策略：官方命令 -> GitHub Release 压缩包下载 -> 本地目录复制 -> 手动引导。
 4. 每一步都必须有明确成功判据，不能只看“命令没报错”。
 
 ## 适用场景
@@ -28,11 +28,11 @@
 
 | 优先级 | 环境 | 检测方式 | 优先安装方式 | 降级方式 | 发现策略 | 验证 |
 |--------|------|----------|--------------|----------|----------|------|
-| 1 | Claude Code | `CLAUDE_CODE=1` | 复制到 `~/.claude/skills/` | 无 | 固定路径 | `ls` 加后续触发 skill 检查 |
-| 2 | Codex | 存在 `CODEX_THREAD_ID` | 复制到 `$CODEX_HOME/skills/` | `$CODEX_HOME` 不存在时询问用户 | 环境变量 | `ls` 并确认 `$CODEX_HOME` 解析有效 |
-| 3 | OpenCode | 存在 `~/.config/opencode/opencode.json` | 复制到 `~/.config/opencode/skills/` | 无 | 配置文件存在性 | `ls` 并检查 skill 路径或 symlink |
-| 4 | Gemini CLI | 存在 `~/.gemini/settings.json` | 复制到 `~/.gemini/skills/` | 无 | 配置文件存在性 | `ls` 加后续触发 skill 检查 |
-| 5 | Registry 型 CLI | 按 CLI 单独扩展 | 使用 CLI 官方 registry 安装命令 | 复制到探测出的落盘路径，实验性 | 查找已安装 skill 反推存储路径 | 必须验证 CLI 实际识别了 skill，不能只看文件存在 |
+| 1 | Claude Code | `CLAUDE_CODE=1` | 复制到 `~/.claude/skills/`，或把 GitHub Release 压缩包解压到该目录 | 无 | 固定路径 | `ls` 加后续触发 skill 检查 |
+| 2 | Codex | 存在 `CODEX_THREAD_ID` | 复制到 `$CODEX_HOME/skills/`，或把 GitHub Release 压缩包解压到该目录 | `$CODEX_HOME` 不存在时询问用户 | 环境变量 | `ls` 并确认 `$CODEX_HOME` 解析有效 |
+| 3 | OpenCode | 存在 `~/.config/opencode/opencode.json` | 复制到 `~/.config/opencode/skills/`，或把 GitHub Release 压缩包解压到该目录 | 无 | 配置文件存在性 | `ls` 并检查 skill 路径或 symlink |
+| 4 | Gemini CLI | 存在 `~/.gemini/settings.json` | 复制到 `~/.gemini/skills/`，或把 GitHub Release 压缩包解压到该目录 | 无 | 配置文件存在性 | `ls` 加后续触发 skill 检查 |
+| 5 | Registry 型 CLI | 按 CLI 单独扩展 | 使用 CLI 官方 registry 安装命令 | 下载 GitHub Release 压缩包，或复制到探测出的落盘路径，实验性 | 查找已安装 skill 反推存储路径 | 必须验证 CLI 实际识别了 skill，不能只看文件存在 |
 | 6 | 未知 | 以上都不匹配 | 无 | 询问用户 | 无 | 停下并请求更多信息 |
 
 如果多个检测条件同时命中，按表中优先级取第一个结果。
@@ -119,7 +119,8 @@ npx skills add larksuite/cli -g -y
 读取该环境的优先安装策略。
 
 - 如果存在官方 registry 安装命令，走 Level 1。
-- 否则，如果能解析出可写的本地 skill 目录，走 Level 2。
+- 否则，如果 GitHub Release 压缩包可访问，且目标目录明确，走 Level 1.5。
+- 否则，如果本地仓库内容已存在且能解析出可写的本地 skill 目录，走 Level 2。
 - 否则停在 Level 3，请求用户提供更多信息。
 
 ### Step 6：安装扩展 Skill
@@ -139,6 +140,29 @@ npx skills add <package> -g -y
 <cli> skills install <slug>
 ```
 
+#### Level 1.5：GitHub Release 压缩包
+
+如果本地并没有现成的仓库 checkout，优先从 GitHub Release 下载标准压缩包，再直接解压到目标 skill 目录。
+
+示例：
+
+```bash
+curl -L https://github.com/<user>/lark-cli-extra-skills/releases/latest/download/lark-cli-extra-skills.tar.gz \
+  | tar xz -C <SKILLS_DIR>
+```
+
+```bash
+curl -L -o /tmp/lark-cli-extra-skills.zip \
+  https://github.com/<user>/lark-cli-extra-skills/releases/latest/download/lark-cli-extra-skills.zip
+unzip /tmp/lark-cli-extra-skills.zip -d <SKILLS_DIR>
+```
+
+适用条件：
+
+- 当前环境接受目录式 skill 安装
+- 当前机器上还没有本仓库的本地副本
+- 当前环境可以访问 GitHub
+
 #### Level 2：本地目录复制
 
 如果该环境支持本地目录安装，则复制 skill 到解析出的目标目录：
@@ -157,17 +181,18 @@ cp -R lark-doc-convert/ <SKILLS_DIR>/lark-doc-convert/
 
 #### Level 3：手动引导
 
-如果既没有官方安装命令，也没有可确认的本地可写路径，应停止并明确报告阻塞点。
+如果既没有官方安装命令，也没有可用的 GitHub Release 下载路径，也没有可确认的本地可写路径，应停止并明确报告阻塞点。
 
 示例说明：
 
-> 当前 CLI 环境没有可确认的本地 skill 安装路径，且此 skill 包也没有可用的官方 registry 安装命令。你可以提供 skill 目录路径，或先将该 skill 发布到对应 registry。
+> 当前 CLI 环境没有可确认的本地 skill 安装路径，且此 skill 包也没有可用的官方 registry 安装命令或 GitHub Release 安装路径。你可以提供 skill 目录路径、先将该 skill 发布到对应 registry，或手动下载 release 压缩包。
 
 ## 加载验证
 
 不要把“文件已复制”或“命令执行成功”当作最终结果。必须尽可能验证 CLI 实际识别了 skill。
 
 - 开放目录型环境：先用 `ls` 确认文件存在，再在后续对话中尽量触发一次 skill 检查。
+- 通过 GitHub Release 压缩包安装：先用 `ls` 确认解压结果，再确认目标 CLI 能看到解压后的 skill 目录。
 - Registry 型环境：优先使用 `<cli> skills list` 之类的命令，确认 skill 真的出现在 CLI 的已安装列表中。
 - 实验性“探测目录后复制”路径：必须明确告诉用户，文件虽已复制，但平台未必已经识别。
 

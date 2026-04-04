@@ -33,7 +33,7 @@
 帮我安装 lark-cli 和扩展 Skill
 ```
 
-`lark-setup` 会负责整个安装流程：识别当前 CLI 环境、安装依赖，并把 skill 复制到正确的目标目录。
+`lark-setup` 会负责整个安装流程：识别当前 CLI 环境、安装依赖，并优先尝试官方安装命令或 GitHub Release 压缩包，再降级到本地复制。
 
 ## 支持的 CLI 环境
 
@@ -52,17 +52,6 @@ English original: [README.md](README.md)
 - 工具和 skill 入口默认应读取英文文件，尤其是 `SKILL.md`。
 - 对应的 `*.zh-CN.md` 是给中文读者使用的翻译版。
 - 如果中英文内容暂时不一致，以英文版为准，中文版随后同步。
-
-## Skills
-
-| Skill | 类型 | 说明 |
-|-------|------|------|
-| `lark-setup` | 环境管理 | 安装、更新、校验并检查 Lark CLI 环境与 skill 包状态 |
-| `lark-sheets-extra` | 领域扩展 | 电子表格 v2 API：合并单元格、样式、行列操作 |
-| `lark-base-batch` | 领域扩展 | 多维表格批量记录：`batch_create` / `batch_update` / `batch_delete` |
-| `lark-im-card` | 领域扩展 | 消息卡片构建指南：JSON 结构和可复用模板 |
-| `lark-workflow-meeting` | 工作流 | 创建会议并通知参会人：忙闲查询 -> 建会 -> 发通知 |
-| `lark-doc-convert` | 工作流 | 云文档导入导出：本地文件与飞书文档之间的统一入口 |
 
 ## 安装
 
@@ -90,7 +79,7 @@ English original: [README.md](README.md)
 - 如果缺失则安装 `lark-cli`
 - 安装官方 `larksuite/cli` skill 包
 - 检测当前 AI CLI 环境
-- 把 `lark-setup` 和扩展 skill 复制到识别出的 skill 目录
+- 根据环境支持情况，通过官方命令、GitHub Release 压缩包或本地复制安装扩展 skill
 - 检查 `lark-cli auth status`
 
 ### 更新现有环境
@@ -105,7 +94,7 @@ English original: [README.md](README.md)
 
 - 执行 `npm update -g @anthropic-ai/lark-cli`
 - 刷新官方 `larksuite/cli` skill 包
-- 重新复制扩展 skill 到检测出的 skill 目录
+- 通过当前环境支持的最佳路径刷新扩展 skill
 - 校验版本和 skill 是否存在
 
 ### 仅检查状态
@@ -159,6 +148,15 @@ cp -r lark-doc-convert/ ~/.claude/skills/lark-doc-convert/
 对 Codex，只在 `$CODEX_HOME` 已定义时使用 `$CODEX_HOME/skills/`。如果该变量不存在，应先确认目标目录，不要直接猜测。
 
 这些扩展 skill 依赖官方 `larksuite/cli` skill 包提供的基础能力。当前仓库只包含补充说明和辅助脚本，不包含 `lark-shared`、`lark-base`、`lark-im`、`lark-calendar`、`lark-drive` 等官方 skill 的内容。
+
+最通用的手动安装方式是 GitHub Release 压缩包：
+
+```bash
+curl -L https://github.com/Clukay-Fun/lark-cli-skill/releases/latest/download/lark-cli-extra-skills.tar.gz \
+  | tar xz -C <SKILLS_DIR>
+```
+
+如果更方便，也可以从同一个 release 页面下载对应的 `.zip` 文件。
 
 ## 依赖
 

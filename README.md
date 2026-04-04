@@ -33,7 +33,7 @@ Talk to your AI CLI agent:
 Install lark-cli and the extra Lark skills for me.
 ```
 
-The `lark-setup` skill handles the full setup flow: it detects the active CLI environment, installs dependencies, and copies skills into the correct target directory.
+The `lark-setup` skill handles the full setup flow: it detects the active CLI environment, installs dependencies, and prefers official install commands or GitHub Release archives before falling back to local copies.
 
 ## Supported CLI Environments
 
@@ -50,17 +50,6 @@ The `lark-setup` skill handles the full setup flow: it detects the active CLI en
 - Tooling should read the English files by default, especially `SKILL.md`.
 - Matching `*.zh-CN.md` files are Chinese translations for human readers.
 - When content diverges, treat the English version as the source of truth and update translations afterward.
-
-## Skills
-
-| Skill | Type | Description |
-|-------|------|-------------|
-| `lark-setup` | Environment management | Install, update, verify, and authenticate the Lark CLI environment and skill packs |
-| `lark-sheets-extra` | Domain extension | Sheets v2 helpers for merge cells, styling, and row/column operations |
-| `lark-base-batch` | Domain extension | Bitable batch record operations: `batch_create` / `batch_update` / `batch_delete` |
-| `lark-im-card` | Domain extension | Interactive card authoring guide with JSON structure and reusable templates |
-| `lark-workflow-meeting` | Workflow | Schedule a meeting and notify attendees: availability lookup -> event creation -> message send |
-| `lark-doc-convert` | Workflow | Unified entry for importing to and exporting from Lark docs |
 
 ## Installation
 
@@ -88,7 +77,7 @@ You should:
 - Installs `lark-cli` if needed
 - Installs the official `larksuite/cli` skill pack
 - Detects the current AI CLI environment
-- Copies `lark-setup` and the extra skills into the resolved skill directory
+- Installs the extra skills by official command, GitHub Release archive, or local copy, depending on what the environment supports
 - Checks `lark-cli auth status`
 
 ### Update an Existing Environment
@@ -103,7 +92,7 @@ You should:
 
 - Runs `npm update -g @anthropic-ai/lark-cli`
 - Refreshes the official `larksuite/cli` skill pack
-- Re-copies the extra skills into the detected skill directory
+- Refreshes the extra skills through the best supported install path
 - Verifies the installed version and skill presence
 
 ### Verify Installation Only
@@ -157,6 +146,15 @@ Manual target directories vary by CLI environment:
 For Codex, use `$CODEX_HOME/skills/` only when `$CODEX_HOME` is defined. If it is not set, confirm the target directory instead of guessing.
 
 These extra skills depend on capabilities provided by the official `larksuite/cli` skill pack. This repository only contains supplemental documentation and helper scripts; it does not vendor official skills such as `lark-shared`, `lark-base`, `lark-im`, `lark-calendar`, or `lark-drive`.
+
+GitHub Release archives are the most portable manual path:
+
+```bash
+curl -L https://github.com/Clukay-Fun/lark-cli-skill/releases/latest/download/lark-cli-extra-skills.tar.gz \
+  | tar xz -C <SKILLS_DIR>
+```
+
+You can also download the matching `.zip` asset from the same release page.
 
 ## Requirements
 
