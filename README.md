@@ -82,7 +82,7 @@ User:
 Install lark-cli and the extra Lark skills for me.
 ```
 
-Agent behavior:
+You should:
 
 - Checks `node`, `npm`, and `lark-cli`
 - Installs `lark-cli` if needed
@@ -99,7 +99,7 @@ User:
 Update my Lark CLI environment.
 ```
 
-Agent behavior:
+You should:
 
 - Runs `npm update -g @anthropic-ai/lark-cli`
 - Refreshes the official `larksuite/cli` skill pack
@@ -114,7 +114,7 @@ User:
 Is lark-cli installed and authenticated?
 ```
 
-Agent behavior:
+You should:
 
 - Checks whether `lark-cli` is on `PATH`
 - Prints or reports the installed version
@@ -129,10 +129,10 @@ User:
 Finish setting up Lark CLI auth.
 ```
 
-Agent behavior:
+You should:
 
 - Runs `lark-cli auth status`
-- If login is still required, tells the user to run `!lark-cli auth login`
+- If login is still required, ask the user to run `!lark-cli auth login`
 - Re-checks auth state after the user completes the interactive step
 
 Manual installation is still available:

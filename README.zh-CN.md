@@ -84,7 +84,7 @@ English original: [README.md](README.md)
 帮我安装 lark-cli 和这些扩展 skill。
 ```
 
-Agent 行为：
+你应：
 
 - 检查 `node`、`npm` 和 `lark-cli`
 - 如果缺失则安装 `lark-cli`
@@ -101,7 +101,7 @@ Agent 行为：
 帮我更新 Lark CLI 环境。
 ```
 
-Agent 行为：
+你应：
 
 - 执行 `npm update -g @anthropic-ai/lark-cli`
 - 刷新官方 `larksuite/cli` skill 包
@@ -116,7 +116,7 @@ Agent 行为：
 看看 lark-cli 有没有装好，认证好了没有。
 ```
 
-Agent 行为：
+你应：
 
 - 检查 `lark-cli` 是否在 `PATH` 中
 - 报告当前安装版本
@@ -131,10 +131,10 @@ Agent 行为：
 把 Lark CLI 的认证也处理一下。
 ```
 
-Agent 行为：
+你应：
 
 - 执行 `lark-cli auth status`
-- 如果尚未登录，提示用户运行 `!lark-cli auth login`
+- 如果尚未登录，提示用户执行 `!lark-cli auth login`
 - 等用户完成交互步骤后，再次检查认证状态
 
 如果需要，也可以手动安装：

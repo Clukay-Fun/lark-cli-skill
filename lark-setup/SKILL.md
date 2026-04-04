@@ -126,7 +126,7 @@ lark-cli auth status
 ```
 
 - If already authenticated, report the current identity or status.
-- If authentication is required, instruct the user to run `!lark-cli auth login` and then re-check status.
+- If authentication is required, ask the user to run `!lark-cli auth login`, then re-check status after the interactive step.
 - Do not promise a fully non-interactive login flow; browser or credential prompts may require user action.
 
 ## Safety Rules
