@@ -45,5 +45,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            lark-cli-extra-skills-*.tar.gz
-            lark-cli-extra-skills-*.zip
+            lark-cli-extra-skills-${{ github.ref_name }}.tar.gz
+            lark-cli-extra-skills-${{ github.ref_name }}.zip
+            lark-cli-extra-skills.tar.gz
+            lark-cli-extra-skills.zip
